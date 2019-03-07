@@ -1,6 +1,6 @@
 <head>
 </head>
-<body>  
+<body onLoad="initCanvas()">  
 <div id="wrapper">  
   
 <div id="header">  
@@ -8,17 +8,80 @@ Header
 </div>  
   
 <div id "main">
-<div id="contents">  
-</div>  
-  
 <!--sidebar部分-->  
 <div id="sidebar">  
+<center>
+  <div id = components>
+    <div class=component><img id=file_read src="/img/file_read_icon.svg" width=90% height=10%></img></div>
+    <div class=component><img id=file_wirte src="/img/file_write_icon.svg" width=90% height=10%></img></div> 
+    <div class=component><img id=http_get src="/img/http_get_icon.svg" width=90% height=10%></img></div>
+  </div>
+</center>
+</div>  
+
+<div id="contents">  
+  <div id = "canvas">
+  </div>  
 </div>  
   
+
 </div>  
 </div>  
 </body>  
 
+<script>
+let components = document.querySelectorAll('#components .component');
+let canvasObjects = document.querySelectorAll('#canvas .object');
+let dragSrcEl = null;
+
+const initCanvas = () => {
+  const target = document.getElementById('canvas');
+  for(let i = 0; i < 4; i++) {
+    target.insertAdjacentHTML('afterbegin', '<span class=object><font size="7">・</font></span>');
+  }
+  
+  // canvasの要素へのイベント登録
+  canvasObjects = document.querySelectorAll('#canvas .object');
+  canvasObjects.forEach(component => {
+    component.addEventListener('dragstart', dragStartFromSidebar, false);
+    component.addEventListener('dragover', handleDragOver, false);
+    component.addEventListener('drop', dropFromSidebar, false);
+  });
+} 
+
+
+const dragStartFromSidebar = function (e) {
+  dragSrcEl = this;
+  e.dataTransfer.dropEffect = 'copy';
+  e.dataTransfer.setData('text/html', this.innerHTML);
+}
+
+const handleDragOver = function(e) {
+  if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to dorp
+  }
+  e.dataTransfer.dorpEffect = 'copy'; // See the section on the DataTransfer object.
+  return false;
+}
+
+const dropFromSidebar = function (e) {
+  if (this.className != 'component') {
+    this.innerHTML = e.dataTransfer.getData('text/html');
+    // children[0]はimage
+    // 要素内の画像を変更
+    const image = this.children[0];
+    image.style.width  = "60px"
+    image.style.height = "60px"
+  }
+  return false;
+}
+
+components.forEach(component => {
+  component.addEventListener('dragstart', dragStartFromSidebar, false);
+  component.addEventListener('dragover', handleDragOver, false);
+  component.addEventListener('drop', dropFromSidebar, false);
+});
+</script>
 
 <style>
 #wrapper {  
@@ -42,13 +105,17 @@ Header
   float: right;  
   margin: 0;  
   padding: 0;  
+  box-sizing: border-box;
+  border-style: solid;
 }  
 #sidebar {  
+  overflow: scroll;
   height: 100%;
-  position: fixed;
   width: 20%;  
   float: left;  
   margin: 0;  
   padding: 0;  
+  box-sizing: border-box;
+  border-style: solid;
 }  
 </style>
