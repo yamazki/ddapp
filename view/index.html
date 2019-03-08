@@ -12,9 +12,12 @@ Header
 <div id="sidebar">  
 <center>
   <div id = components>
-    <div class=component><img id=file_read src="/img/file_read_icon.svg" width=90% height=10%></img></div>
-    <div class=component><img id=file_wirte src="/img/file_write_icon.svg" width=90% height=10%></img></div> 
-    <div class=component><img id=http_get src="/img/http_get_icon.svg" width=90% height=10%></img></div>
+    <br>
+    <div class=component><img id=file_read src="/img/file_read_icon.png" width=90% height=50px></img></div>
+    <br>
+    <div class=component><img id=file_wirte src="/img/file_write_icon.png" width=90% height=50px></img></div> 
+    <br>
+    <div class=component><img id=http_get src="/img/http_get_icon.png" width=90% height=50px></img></div>
   </div>
 </center>
 </div>  
@@ -68,10 +71,10 @@ const dropFromSidebar = function (e) {
   if (this.className != 'component') {
     this.innerHTML = e.dataTransfer.getData('text/html');
     // children[0]はimage
-    // 要素内の画像を変更
+    // 要素内の画像の大きさを変更
     const image = this.children[0];
-    image.style.width  = "60px"
-    image.style.height = "60px"
+    image.style.width  = "80px"
+    image.style.height = "80px"
   }
   return false;
 }
@@ -99,20 +102,20 @@ components.forEach(component => {
   height: 100%;
   width: 100%;
 }
-#contents {  
+#sidebar {  
+  overflow: scroll;
   height: 100%;
-  width: 80%;  
-  float: right;  
+  width: 200px;  
+  float: left;  
   margin: 0;  
   padding: 0;  
   box-sizing: border-box;
   border-style: solid;
 }  
-#sidebar {  
-  overflow: scroll;
+#contents {  
   height: 100%;
-  width: 20%;  
-  float: left;  
+  width: calc(100% - 200px);  
+  float: right;  
   margin: 0;  
   padding: 0;  
   box-sizing: border-box;
