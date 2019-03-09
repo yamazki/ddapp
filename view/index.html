@@ -6,6 +6,7 @@
 <div id="header">  
   Header
   <input type="button" onClick="initCanvas()" value="キャンバス初期化" style="float: right;">
+  <input type="button" onClick="deleteCanvasObject(selectedCanvasObject)" value="キャンバスオブジェクト削除" style="float: right;">
 </div>  
   
 <div id "main">
@@ -37,6 +38,7 @@ let components = document.querySelectorAll('#components .component');
 let canvas = document.querySelector('#canvas');
 const canvasElement = document.getElementById('canvas');
 const mousePosition = {};
+let selectedCanvasObject = null;
 
 // Elementが代入される
 let dragSrcEl = null;
@@ -49,13 +51,16 @@ const initCanvas = () => {
   }
 } 
 
+const deleteCanvasObject = (canvasObject) => {
+  selectedCanvasObject.remove();
+}
+
 const dragStartFromSidebar = function (e) {
   dragSrcEl = this;
   mousePosition.x = e.x;
   mousePosition.y = e.y;
   e.dataTransfer.dropEffect = 'copy';
   e.dataTransfer.setData('text/html', this.innerHTML);
-  console.log(mousePosition);
 }
 
 // canvas内にあるcanvasObjectのドラッグ時のイベント
@@ -85,13 +90,14 @@ const dropToCanvas = function (e) {
     case "component":
       const image = dragSrcEl.children[0]
       const insertHTML = `<span class=canvasObject style="left: ${targetPosition.x - 30}; top: ${targetPosition.y - 30};"> 
-                            <img src=${image.src} style="width: 100%; height: 100%">
+                            <img src=${image.src} style="width: 95%; height: 95%">
                           </span>`;
       // 新しく登録されたcanvasObjectにイベントの登録                    
       this.insertAdjacentHTML('afterbegin',insertHTML);
       const canvasObjects = document.querySelectorAll('#canvas .canvasObject')
-      canvasObjects.forEach(canvas => {
-        canvas.addEventListener('dragstart', dragStartFromCanvasObject, false);
+      canvasObjects.forEach(canvasObject => {
+        canvasObject.addEventListener('dragstart', dragStartFromCanvasObject, false);
+        canvasObject.addEventListener('click', clickCanvasObject, false);
       });
       break;
       
@@ -104,19 +110,22 @@ const dropToCanvas = function (e) {
   return false;
 }
 
-const drag = function (e) {
-  console.log(mousePosition);
+const clickCanvasObject = function (e) {
+  const canvasObjects = document.querySelectorAll('#canvas .canvasObject')
+  canvasObjects.forEach(canvasObject => canvasObject.style.filter = "brightness(100%)")
+  selectedCanvasObject = this;
+  this.style.filter = "brightness(90%)";
+  
+  console.log(this.children[0]);
 }
 
 components.forEach(component => {
   component.addEventListener('dragstart', dragStartFromSidebar, false);
   component.addEventListener('dragover', handleDragOver, false);
-  component.addEventListener('drag', drag, false);
 });
 
 canvas.addEventListener('dragover', handleDragOver, false);
 canvas.addEventListener('drop', dropToCanvas, false);
-console.log(canvas)
 
 </script>
 
