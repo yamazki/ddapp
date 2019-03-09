@@ -15,11 +15,11 @@
 <center>
   <div id = components>
     <br>
-    <div class=component><img id=file_read src="/img/file_read_icon.png" width=90% height=50px></img></div>
+      <div class=component id=file_read><img id=file_read src="/img/file_read_icon.png" width=90% height=50px></img></div>
     <br>
-    <div class=component><img id=file_wirte src="/img/file_write_icon.png" width=90% height=50px></img></div> 
+      <div class=component id=file_write><img id=file_wirte src="/img/file_write_icon.png" width=90% height=50px></img></div> 
     <br>
-    <div class=component><img id=http_get src="/img/http_get_icon.png" width=90% height=50px></img></div>
+      <div class=component id=http_get><img id=http_get src="/img/http_get_icon.png" width=90% height=50px></img></div>
   </div>
 </center>
 </div>  
@@ -78,6 +78,7 @@ const handleDragOver = function(e) {
   return false;
 }
 
+let targetExists = true;
 const targetPosition = {}
 const dropToCanvas = function (e) {
   const targetPosition = {};
@@ -97,14 +98,23 @@ const dropToCanvas = function (e) {
       const canvasObjects = document.querySelectorAll('#canvas .canvasObject')
       canvasObjects.forEach(canvasObject => {
         canvasObject.addEventListener('dragstart', dragStartFromCanvasObject, false);
+        canvasObject.addEventListener('drop', dragCheck, false);
         canvasObject.addEventListener('click', clickCanvasObject, false);
       });
       break;
       
     // キャンバス内からキャンバス内へのドラッグアンドドロップ
     case "canvasObject":
-      dragSrcEl.style.left = targetPosition.x;
-      dragSrcEl.style.top = targetPosition.y;
+    console.log(targetExists);
+      // ドラッグ先にcanvasObjectが存在しない場合
+      if(targetExists) {
+        console.log("test2");
+        dragSrcEl.style.left = targetPosition.x;
+        dragSrcEl.style.top = targetPosition.y;
+      }
+      else {
+        targetExists = true;
+      }
       break;
   }
   return false;
@@ -115,8 +125,13 @@ const clickCanvasObject = function (e) {
   canvasObjects.forEach(canvasObject => canvasObject.style.filter = "brightness(100%)")
   selectedCanvasObject = this;
   this.style.filter = "brightness(90%)";
-  
-  console.log(this.children[0]);
+}
+
+// ２つのイベントが同時に実行可能な場合,子ノードから優先して実行されるっぽいので
+// 子ノードのイベントが実行されないようにする
+const dragCheck = function (e) {
+  console.log("test1");
+  targetExists = false;
 }
 
 components.forEach(component => {
