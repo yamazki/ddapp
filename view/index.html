@@ -38,17 +38,8 @@ let canvas = document.querySelector('#canvas');
 const canvasElement = document.getElementById('canvas');
 const mousePosition = {};
 
-// マウスの座標更新イベント多分いらない
-// window.onload = function(){
-//   document.body.addEventListener("mousemove", function(e) {
-//     mousePosition.x = e.pageX;  //X座標
-//     mousePosition.y = e.pageY;  //Y座標
-//   });
-// }
-
 // Elementが代入される
 let dragSrcEl = null;
-
 
 const initCanvas = () => {
   // canvas内のcanvasObjectの全削除
@@ -57,6 +48,19 @@ const initCanvas = () => {
     canvasElement.removeChild(canvasElement.firstChild);
   }
 } 
+
+window.onload=function(){
+  //マウス移動時のイベントをBODYタグに登録する
+  document.body.addEventListener("mousemove", function(e){
+ 
+    //座標を取得する
+    var mX = e.pageX;  //X座標
+    var mY = e.pageY;  //Y座標
+ 
+    //座標を表示する
+    console.log(`${mX}, ${mY}`);
+  });
+}
 
 
 const dragStartFromSidebar = function (e) {
@@ -76,18 +80,21 @@ const handleDragOver = function(e) {
   return false;
 }
 
+const targetPosition = {}
 const dropFromSidebar = function (e) {
   if (this.className != 'component') {
     mousePosition.x = e.x;
     mousePosition.y = e.y;
+    targetPosition.x = mousePosition.x;
+    targetPosition.y = mousePosition.y;
     //this.innerHTML = e.dataTransfer.getData('text/html');
     const image = dragSrcEl.children[0]
-    const insertHTML = `<span class=canvasObject style="top: ${mousePosition.x}; left: ${mousePosition.y};"> 
+    const insertHTML = `<span class=canvasObject style="left: ${targetPosition.x - 100}; top: ${targetPosition.y - 20};"> 
                           <img src=${image.src} style="max-width: 100%;">
                         </span>`
     console.log(insertHTML);
-    this.insertAdjacentHTML('afterbegin',insertHTML);
     console.log(mousePosition);
+    this.insertAdjacentHTML('afterbegin',insertHTML);
   }
   return false;
 }
