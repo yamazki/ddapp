@@ -49,20 +49,6 @@ const initCanvas = () => {
   }
 } 
 
-window.onload=function(){
-  //マウス移動時のイベントをBODYタグに登録する
-  document.body.addEventListener("mousemove", function(e){
- 
-    //座標を取得する
-    var mX = e.pageX;  //X座標
-    var mY = e.pageY;  //Y座標
- 
-    //座標を表示する
-    console.log(`${mX}, ${mY}`);
-  });
-}
-
-
 const dragStartFromSidebar = function (e) {
   dragSrcEl = this;
   mousePosition.x = e.x;
@@ -70,6 +56,13 @@ const dragStartFromSidebar = function (e) {
   e.dataTransfer.dropEffect = 'copy';
   e.dataTransfer.setData('text/html', this.innerHTML);
   console.log(mousePosition);
+}
+
+// canvas内にあるcanvasObjectの移動時のイベント
+const dragStartFromCanvasObject = function (e) {
+  dragSrcEl = this;
+  mousePosition.x = e.x;
+  mousePosition.y = e.y;
 }
 
 const handleDragOver = function(e) {
@@ -81,20 +74,31 @@ const handleDragOver = function(e) {
 }
 
 const targetPosition = {}
-const dropFromSidebar = function (e) {
-  if (this.className != 'component') {
-    mousePosition.x = e.x;
-    mousePosition.y = e.y;
-    targetPosition.x = mousePosition.x;
-    targetPosition.y = mousePosition.y;
-    //this.innerHTML = e.dataTransfer.getData('text/html');
-    const image = dragSrcEl.children[0]
-    const insertHTML = `<span class=canvasObject style="left: ${targetPosition.x - 100}; top: ${targetPosition.y - 20};"> 
-                          <img src=${image.src} style="max-width: 100%;">
-                        </span>`
-    console.log(insertHTML);
-    console.log(mousePosition);
-    this.insertAdjacentHTML('afterbegin',insertHTML);
+const dropToCanvas = function (e) {
+  switch(dragSrcEl.className) {
+    case "component":
+      console.log(dragSrcEl.className);
+      mousePosition.x = e.x;
+      mousePosition.y = e.y;
+      targetPosition.x = mousePosition.x;
+      targetPosition.y = mousePosition.y;
+      const image = dragSrcEl.children[0]
+      const insertHTML = `<span class=canvasObject style="left: ${targetPosition.x - 100}; top: ${targetPosition.y - 20};"> 
+                            <img src=${image.src} style="max-width: 100%;">
+                          </span>`;
+                          
+      // 新しく登録されたcanvasObjectにイベントの登録                    
+      const canvasObjects = document.querySelectorAll('#canvas .canvasObject')
+      canvasObjects.forEach(canvas => {
+        canvas.addEventListener('dragstart', dragStartFromCanvasObject, false);
+      });
+      console.log(insertHTML);
+      console.log(mousePosition);
+      this.insertAdjacentHTML('afterbegin',insertHTML);
+      break;
+      
+    case "canvasObject":
+      break;
   }
   return false;
 }
@@ -110,7 +114,7 @@ components.forEach(component => {
 });
 
 canvas.addEventListener('dragover', handleDragOver, false);
-canvas.addEventListener('drop', dropFromSidebar, false);
+canvas.addEventListener('drop', dropToCanvas, false);
 console.log(canvas)
 
 </script>
