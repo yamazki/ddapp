@@ -4,7 +4,8 @@
 <div id="wrapper">  
   
 <div id="header">  
-Header
+  Header
+  <input type="button" onClick="initCanvas()" value="キャンバス初期化" style="float: right;">
 </div>  
   
 <div id "main">
@@ -23,8 +24,7 @@ Header
 </div>  
 
 <div id="contents">  
-  <div id = "canvas">
-  </div>  
+  <div id="canvas" doraggable="false" droppable="true"> </div>  
 </div>  
   
 
@@ -49,21 +49,13 @@ const mousePosition = {};
 // Elementが代入される
 let dragSrcEl = null;
 
+
 const initCanvas = () => {
-  const target = document.getElementById('canvas');
-  for(let i = 0; i < 4; i++) {
-    target.insertAdjacentHTML('afterbegin', '<span class=object><font size="7">・</font></span>');
+  // canvas内のcanvasObjectの全削除
+  const canvasElement = document.getElementById('canvas')
+  while (canvasElement.firstChild) {
+    canvasElement.removeChild(canvasElement.firstChild);
   }
-  
-  
-  
-  // canvasの要素へのイベント登録
-  canvasObjects = document.querySelectorAll('#canvas .object');
-  canvasObjects.forEach(component => {
-    component.addEventListener('dragstart', dragStartFromSidebar, false);
-    component.addEventListener('dragover', handleDragOver, false);
-    component.addEventListener('drop', dropFromSidebar, false);
-  });
 } 
 
 
@@ -86,37 +78,33 @@ const handleDragOver = function(e) {
 
 const dropFromSidebar = function (e) {
   if (this.className != 'component') {
-    this.innerHTML = e.dataTransfer.getData('text/html');
-    // children[0]はimage
-    // 要素内の画像の大きさを変更
-    const image = this.children[0];
-    image.style.width  = "80px"
-    image.style.height = "80px"
-    const rect = dragSrcEl.getBoundingClientRect();
-    console.log(rect)
-    console.log(rect.left);
-    console.log(rect.top);
+    mousePosition.x = e.x;
+    mousePosition.y = e.y;
+    //this.innerHTML = e.dataTransfer.getData('text/html');
+    const image = dragSrcEl.children[0]
+    const insertHTML = `<span class=canvasObject style="top: ${mousePosition.x}; left: ${mousePosition.y};"> 
+                          <img src=${image.src} style="max-width: 100%;">
+                        </span>`
+    console.log(insertHTML);
+    this.insertAdjacentHTML('afterbegin',insertHTML);
+    console.log(mousePosition);
   }
   return false;
 }
 
 const drag = function (e) {
-  mousePosition.x = e.x;
-  mousePosition.y = e.y;
   console.log(mousePosition);
 }
 
 components.forEach(component => {
   component.addEventListener('dragstart', dragStartFromSidebar, false);
   component.addEventListener('dragover', handleDragOver, false);
-  component.addEventListener('drop', dropFromSidebar, false);
   component.addEventListener('drag', drag, false);
 });
 
-canvas.addEventListener('dragstart', dragStartFromSidebar, false);
 canvas.addEventListener('dragover', handleDragOver, false);
 canvas.addEventListener('drop', dropFromSidebar, false);
-canvas.addEventListener('drag', drag, false);
+console.log(canvas)
 
 </script>
 
@@ -155,4 +143,14 @@ canvas.addEventListener('drag', drag, false);
   box-sizing: border-box;
   border-style: solid;
 }  
+#canvas {  
+  height: 100%;
+  width: 100%;
+}
+.canvasObject {  
+  display: inline-block;
+  position: absolute;
+  height: 50px;
+  width: 100px;
+}
 </style>
