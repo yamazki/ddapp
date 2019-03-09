@@ -34,7 +34,19 @@ Header
 
 <script>
 let components = document.querySelectorAll('#components .component');
-let canvasObjects = document.querySelectorAll('#canvas .object');
+let canvas = document.querySelector('#canvas');
+const canvasElement = document.getElementById('canvas');
+const mousePosition = {};
+
+// マウスの座標更新イベント多分いらない
+// window.onload = function(){
+//   document.body.addEventListener("mousemove", function(e) {
+//     mousePosition.x = e.pageX;  //X座標
+//     mousePosition.y = e.pageY;  //Y座標
+//   });
+// }
+
+// Elementが代入される
 let dragSrcEl = null;
 
 const initCanvas = () => {
@@ -42,6 +54,8 @@ const initCanvas = () => {
   for(let i = 0; i < 4; i++) {
     target.insertAdjacentHTML('afterbegin', '<span class=object><font size="7">・</font></span>');
   }
+  
+  
   
   // canvasの要素へのイベント登録
   canvasObjects = document.querySelectorAll('#canvas .object');
@@ -55,8 +69,11 @@ const initCanvas = () => {
 
 const dragStartFromSidebar = function (e) {
   dragSrcEl = this;
+  mousePosition.x = e.x;
+  mousePosition.y = e.y;
   e.dataTransfer.dropEffect = 'copy';
   e.dataTransfer.setData('text/html', this.innerHTML);
+  console.log(mousePosition);
 }
 
 const handleDragOver = function(e) {
@@ -75,15 +92,32 @@ const dropFromSidebar = function (e) {
     const image = this.children[0];
     image.style.width  = "80px"
     image.style.height = "80px"
+    const rect = dragSrcEl.getBoundingClientRect();
+    console.log(rect)
+    console.log(rect.left);
+    console.log(rect.top);
   }
   return false;
+}
+
+const drag = function (e) {
+  mousePosition.x = e.x;
+  mousePosition.y = e.y;
+  console.log(mousePosition);
 }
 
 components.forEach(component => {
   component.addEventListener('dragstart', dragStartFromSidebar, false);
   component.addEventListener('dragover', handleDragOver, false);
   component.addEventListener('drop', dropFromSidebar, false);
+  component.addEventListener('drag', drag, false);
 });
+
+canvas.addEventListener('dragstart', dragStartFromSidebar, false);
+canvas.addEventListener('dragover', handleDragOver, false);
+canvas.addEventListener('drop', dropFromSidebar, false);
+canvas.addEventListener('drag', drag, false);
+
 </script>
 
 <style>
