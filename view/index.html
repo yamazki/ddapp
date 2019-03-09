@@ -58,7 +58,7 @@ const dragStartFromSidebar = function (e) {
   console.log(mousePosition);
 }
 
-// canvas内にあるcanvasObjectの移動時のイベント
+// canvas内にあるcanvasObjectのドラッグ時のイベント
 const dragStartFromCanvasObject = function (e) {
   dragSrcEl = this;
   mousePosition.x = e.x;
@@ -75,29 +75,30 @@ const handleDragOver = function(e) {
 
 const targetPosition = {}
 const dropToCanvas = function (e) {
+  const targetPosition = {};
+  mousePosition.x = e.x;
+  mousePosition.y = e.y;
+  targetPosition.x = mousePosition.x;
+  targetPosition.y = mousePosition.y;
   switch(dragSrcEl.className) {
+    // サイドバーからのドラッグアンドドロップ
     case "component":
-      console.log(dragSrcEl.className);
-      mousePosition.x = e.x;
-      mousePosition.y = e.y;
-      targetPosition.x = mousePosition.x;
-      targetPosition.y = mousePosition.y;
       const image = dragSrcEl.children[0]
-      const insertHTML = `<span class=canvasObject style="left: ${targetPosition.x - 100}; top: ${targetPosition.y - 20};"> 
-                            <img src=${image.src} style="max-width: 100%;">
+      const insertHTML = `<span class=canvasObject style="left: ${targetPosition.x - 30}; top: ${targetPosition.y - 30};"> 
+                            <img src=${image.src} style="width: 100%; height: 100%">
                           </span>`;
-                          
       // 新しく登録されたcanvasObjectにイベントの登録                    
+      this.insertAdjacentHTML('afterbegin',insertHTML);
       const canvasObjects = document.querySelectorAll('#canvas .canvasObject')
       canvasObjects.forEach(canvas => {
         canvas.addEventListener('dragstart', dragStartFromCanvasObject, false);
       });
-      console.log(insertHTML);
-      console.log(mousePosition);
-      this.insertAdjacentHTML('afterbegin',insertHTML);
       break;
       
+    // キャンバス内からキャンバス内へのドラッグアンドドロップ
     case "canvasObject":
+      dragSrcEl.style.left = targetPosition.x;
+      dragSrcEl.style.top = targetPosition.y;
       break;
   }
   return false;
@@ -161,7 +162,7 @@ console.log(canvas)
 .canvasObject {  
   display: inline-block;
   position: absolute;
-  height: 50px;
+  height: 40px;
   width: 100px;
 }
 </style>
