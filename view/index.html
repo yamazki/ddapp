@@ -44,12 +44,16 @@ let selectedCanvasObject = null;
 let dragSrcEl = null;
 
 const initCanvas = () => {
+  removeAllCanvasObject();
+} 
+
+const removeAllCanvasObject = () => {
   // canvas内のcanvasObjectの全削除
   const canvasElement = document.getElementById('canvas')
   while (canvasElement.firstChild) {
     canvasElement.removeChild(canvasElement.firstChild);
   }
-} 
+}
 
 const deleteCanvasObject = (canvasObject) => {
   selectedCanvasObject.remove();
@@ -78,7 +82,7 @@ const handleDragOver = function(e) {
   return false;
 }
 
-let targetExists = true;
+let targetCanvasObjectExists = true;
 const targetPosition = {}
 const dropToCanvas = function (e) {
   const targetPosition = {};
@@ -105,15 +109,15 @@ const dropToCanvas = function (e) {
       
     // キャンバス内からキャンバス内へのドラッグアンドドロップ
     case "canvasObject":
-    console.log(targetExists);
+    console.log(targetCanvasObjectExists);
       // ドラッグ先にcanvasObjectが存在しない場合
-      if(targetExists) {
+      if(targetCanvasObjectExists) {
         console.log("test2");
         dragSrcEl.style.left = targetPosition.x;
         dragSrcEl.style.top = targetPosition.y;
       }
       else {
-        targetExists = true;
+        targetCanvasObjectExists = true;
       }
       break;
   }
@@ -131,7 +135,7 @@ const clickCanvasObject = function (e) {
 // 子ノードのイベントが実行されないようにする
 const dragCheck = function (e) {
   console.log("test1");
-  targetExists = false;
+  targetCanvasObjectExists = false;
 }
 
 components.forEach(component => {
