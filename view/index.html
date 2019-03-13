@@ -1,12 +1,12 @@
 <head>
 </head>
-<body onLoad="initCanvas()">  
+<body="initCanvas()">  
 <div id="wrapper">  
   
 <div id="header">  
   Header
-  <input type="button" onClick="initCanvas()" value="キャンバス初期化" style="float: right;">
-  <input type="button" onClick="deleteCanvasObject(selectedCanvasObject)" value="キャンバスオブジェクト削除" style="float: right;">
+  <input type="button" onClick="canvasEvent.initCanvas('canvas')" value="キャンバス初期化" style="float: right;">
+  <input type="button" onClick="canvasEvent.deleteCanvasObject(selectedCanvasObject)" value="キャンバスオブジェクト削除" style="float: right;">
 </div>  
   
 <div id "main">
@@ -32,15 +32,20 @@
 </div>  
 </div>  
 </body>  
+<script type="module">
+import * as canvas from '/js/canvas.js';
+window.canvas = new canvas.Canvas('canvas');
 
-<script>
+console.log(canvas)
+
 let components = document.querySelectorAll('#components .component');
-let canvas = document.querySelector('#canvas');
+// let canvas = document.querySelector('#canvas');
 const canvasElement = document.getElementById('canvas');
 const mousePosition = {};
 let selectedCanvasObject = null;
+window.selectedCanvasObject = selectedCanvasObject;
 
-// Elementが代入される
+// Elementが代入される変数
 let dragSrcEl = null;
 
 const initCanvas = () => {
@@ -56,6 +61,8 @@ const removeAllCanvasObject = () => {
 }
 
 const deleteCanvasObject = (canvasObject) => {
+  console.log(canvasObject);
+  canvasObject.remove();
   selectedCanvasObject.remove();
 }
 
@@ -128,6 +135,7 @@ const clickCanvasObject = function (e) {
   const canvasObjects = document.querySelectorAll('#canvas .canvasObject')
   canvasObjects.forEach(canvasObject => canvasObject.style.filter = "brightness(100%)")
   selectedCanvasObject = this;
+  window.selectedCanvasObject = this;
   this.style.filter = "brightness(90%)";
 }
 
