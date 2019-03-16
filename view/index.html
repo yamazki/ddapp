@@ -33,11 +33,21 @@
 </div>  
 </body>  
 <script type="module">
-import * as canvas from '/js/canvas.js';
-window.canvas = new canvas.Canvas('canvas');
-
+import {Canvas} from '/js/canvas/canvas.js';
+import {Sidebar} from '/js/sidebar/sidebar.js';
+const canvas = new Canvas('canvas');
+window.canvas = canvas;
+window.draggedElement = null; // ドラッグされている要素
+const sidebar = new Sidebar('sidebar');
+console.log(canvas.element);
+console.log(document.querySelector('#canvas'));
 console.log(canvas)
+console.log(window.canvas)
 
+// canvas.element.addEventListener('dragover', (e) => console.log(1234), false);
+// canvas.element.addEventListener('dragover',canvas.droppedComponent, false);
+
+//canvas.addEventListener('dragover', handleDragOver, false);
 let components = document.querySelectorAll('#components .component');
 // let canvas = document.querySelector('#canvas');
 const canvasElement = document.getElementById('canvas');
@@ -45,29 +55,10 @@ const mousePosition = {};
 let selectedCanvasObject = null;
 window.selectedCanvasObject = selectedCanvasObject;
 
-// Elementが代入される変数
-let dragSrcEl = null;
-
-const initCanvas = () => {
-  removeAllCanvasObject();
-} 
-
-const removeAllCanvasObject = () => {
-  // canvas内のcanvasObjectの全削除
-  const canvasElement = document.getElementById('canvas')
-  while (canvasElement.firstChild) {
-    canvasElement.removeChild(canvasElement.firstChild);
-  }
-}
-
-const deleteCanvasObject = (canvasObject) => {
-  console.log(canvasObject);
-  canvasObject.remove();
-  selectedCanvasObject.remove();
-}
+let draggedElement = null; // Elementが代入される変数
 
 const dragStartFromSidebar = function (e) {
-  dragSrcEl = this;
+  window.draggedElement = this;
   mousePosition.x = e.x;
   mousePosition.y = e.y;
   e.dataTransfer.dropEffect = 'copy';
@@ -76,7 +67,7 @@ const dragStartFromSidebar = function (e) {
 
 // canvas内にあるcanvasObjectのドラッグ時のイベント
 const dragStartFromCanvasObject = function (e) {
-  dragSrcEl = this;
+  window.draggedElement = this;
   mousePosition.x = e.x;
   mousePosition.y = e.y;
 }
@@ -97,15 +88,15 @@ const dropToCanvas = function (e) {
   mousePosition.y = e.y;
   targetPosition.x = mousePosition.x;
   targetPosition.y = mousePosition.y;
-  switch(dragSrcEl.className) {
+  switch(draggedElement.className) {
     // サイドバーからのドラッグアンドドロップ
     case "component":
-      const image = dragSrcEl.children[0]
+      const image = draggedElement.children[0]
       const insertHTML = `<span class=canvasObject style="left: ${targetPosition.x - 30}; top: ${targetPosition.y - 30};"> 
                             <img src=${image.src} style="width: 95%; height: 95%">
                           </span>`;
       // 新しく登録されたcanvasObjectにイベントの登録                    
-      this.insertAdjacentHTML('afterbegin',insertHTML);
+      this.insertAdjacentHTML('afterbegin', insertHTML);
       const canvasObjects = document.querySelectorAll('#canvas .canvasObject')
       canvasObjects.forEach(canvasObject => {
         canvasObject.addEventListener('dragstart', dragStartFromCanvasObject, false);
@@ -117,11 +108,11 @@ const dropToCanvas = function (e) {
     // キャンバス内からキャンバス内へのドラッグアンドドロップ
     case "canvasObject":
     console.log(targetCanvasObjectExists);
-      // ドラッグ先にcanvasObjectが存在しない場合
+      // ドラッグ先にcanvasObjectが存在する場合
       if(targetCanvasObjectExists) {
         console.log("test2");
-        dragSrcEl.style.left = targetPosition.x;
-        dragSrcEl.style.top = targetPosition.y;
+        draggedElement.style.left = targetPosition.x;
+        draggedElement.style.top = targetPosition.y;
       }
       else {
         targetCanvasObjectExists = true;
@@ -151,8 +142,6 @@ components.forEach(component => {
   component.addEventListener('dragover', handleDragOver, false);
 });
 
-canvas.addEventListener('dragover', handleDragOver, false);
-canvas.addEventListener('drop', dropToCanvas, false);
 
 </script>
 
