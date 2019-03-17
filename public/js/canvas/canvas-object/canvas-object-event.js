@@ -3,7 +3,6 @@ import {CanvasObjectView} from './canvas-object-view.js'
 export class CanvasObjectEvent {
   
   static click(e) {
-    console.log(this);
     window.canvas.selectedCanvasObject = this;
     CanvasObjectView.addColorselectedObject(this);
   }
@@ -13,7 +12,9 @@ export class CanvasObjectEvent {
   }
   
   static drop(e) {
-    console.log("drop")
+    console.log(window.canvas.draggedElement);
+    console.log(this);
+    
     e.stopPropagation();
   }
   

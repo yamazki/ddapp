@@ -4,10 +4,11 @@ export class CanvasObjectView {
   static addColorselectedObject(selectedCanvasObject) {
     
     // すべてのcanvasObjectの色を初期化
-    for(const key in window.canvas.canvasObjects) {
-      window.canvas.canvasObjects[key].element.style.filter = "brightness(100%)";
-    }
-    selectedCanvasObject.style.filter = "brightness(90%)";
+    
+    window.canvas.canvasObjects.forEach(canvasObject => {
+      canvasObject.element.style.filter = "brightness(100%)";
+    });
+      selectedCanvasObject.style.filter = "brightness(90%)";
   }
   
 }

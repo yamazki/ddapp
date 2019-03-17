@@ -11,8 +11,7 @@ export class CanvasEvent {
       case "component":
         const image = draggedElement.children[0]
         const insertElement = CanvasView.insertCanvasObjectImage(image, e.x, e.y, this);
-        // 新しく登録されたcanvasObjectにイベントを登録                    
-        canvas.canvasObjects[window.canvas.canvasObjectCounter++] = new CanvasObject(insertElement, window.canvas.canvasObjectCounter);
+        canvas.canvasObjects.push(new CanvasObject(insertElement));
         
          // canvasObjectElement.addEventListener('dragstart', dragStartFromCanvasObject, false);
          // canvasObjectElement.addEventListener('drop', dragCheck, false);

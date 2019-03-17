@@ -4,14 +4,11 @@ import {CanvasObject} from './canvas-object/canvas-object.js'
 
 export class Canvas {
   
-  canvasObjects = {};
-  selectedCanvasObject = null;
-  canvasObjectCounter = 0; // canvasObjectの識別番号として利用?
+  canvasObjects = [];
   selectedCanvasObject = null;
   draggedElement = null;
   
   constructor(id) {
-    this.id = id;
     this.element = document.getElementById(id);
     this.registerEvents();
   }
@@ -28,13 +25,13 @@ export class Canvas {
       CanvasView.deleteElement(this.element.firstChild);
     }
     // データモデルの削除
-    for(const key in this.canvasObjects) {
-      delete this.canvasObjects[key];
-    }
+    this.canvasObjects.length = 0;
   }
    
-  deleteCanvasObject(canvasObject) {
-    selectedCanvasObject.remove();
+  removeCanvasObject() {
+    CanvasView.deleteElement(this.selectedCanvasObject);
+    // selectedCanvasObjectを配列から削除
+    this.canvasObjects = this.canvasObjects.filter(canvasObject => canvasObject.element != this.selectedCanvasObject);
   }
   
   SidebarObjectDropped(e) {

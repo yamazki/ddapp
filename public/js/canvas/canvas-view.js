@@ -8,13 +8,12 @@ export class CanvasView {
   // @param targetElement 貼り付け先の親要素
   // @retrun 追加したelement 
   static insertCanvasObjectImage (image, xPoint, yPoint, parentElement) {
-    const insertElement = `<span class=canvasObject style="left: ${xPoint - 30}; top: ${yPoint - 30};"> 
+    const insertElement = `<span class=canvasObject style="left: ${xPoint - 10}; top: ${yPoint - 10};"> 
                              <img src=${image.src} style="width: 95%; height: 95%">
                            </span>`;
     parentElement.insertAdjacentHTML('afterbegin', insertElement);
     
-    // 追加された要素は親要素の最初に来るので(Chromeだけ？)
-    // 親要素の一番最初の要素をreturn
+    // 親要素の一番最初の要素,つまり追加した要素をreturn
     return parentElement.firstChild;
   }
   

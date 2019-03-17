@@ -2,9 +2,8 @@ import {CanvasObjectEvent} from './canvas-object-event.js'
 
 export class CanvasObject {
   
-  constructor(element, id) {
+  constructor(element) {
     this.element = element;
-    this.id = id;
     this.registerEvents();
   }
   
