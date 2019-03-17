@@ -1,33 +1,33 @@
 export class CanvasView {
   
     
-  // $B2hA|$rMWAG$KA^F~$9$k(B
-  // @param draggedElement $BE=$jIU$1$k2hA|(B
-  // @param xPoint $BE=$jIU$1@h$N(Bx$B:BI8(B
-  // @param yPoint $BE=$jIU$1@h$N(By$B:BI8(B
-  // @param targetElement $BE=$jIU$1@h$N?FMWAG(B
-  // @retrun $BDI2C$7$?(Belement 
+  // 画像を要素に挿入する
+  // @param draggedElement 貼り付ける画像
+  // @param xPoint 貼り付け先のx座標
+  // @param yPoint 貼り付け先のy座標
+  // @param targetElement 貼り付け先の親要素
+  // @retrun 追加したelement 
   static insertCanvasObjectImage (image, xPoint, yPoint, parentElement) {
     const insertElement = `<span class=canvasObject style="left: ${xPoint - 10}; top: ${yPoint - 10};"> 
                              <img src=${image.src} style="width: 95%; height: 95%">
                            </span>`;
     parentElement.insertAdjacentHTML('afterbegin', insertElement);
     
-    // $B?FMWAG$N0lHV:G=i$NMWAG(B,$B$D$^$jDI2C$7$?MWAG$r(Breturn
+    // 親要素の一番最初の要素,つまり追加した要素をreturn
     return parentElement.firstChild;
   }
   
-  // $B2hA|$r%I%i%C%0$G0\F0$5$;$k(B
-  // @param draggedElement $B0\F0$5$;$k2hA|$NMWAG(B
-  // @param xPoint $B0\F0@h$N(Bx$B:BI8(B
-  // @param yPoint $B0\F0@h$N(By$B:BI8(B
+  // 画像をドラッグで移動させる
+  // @param draggedElement 移動させる画像の要素
+  // @param xPoint 移動先のx座標
+  // @param yPoint 移動先のy座標
   static moveImage(draggedElement, xPoint, yPoint) {
     draggedElement.style.left = xPoint
     draggedElement.style.top  = yPoint
   }
   
-  // $B%-%c%s%P%9Fb$NMWAG$r:o=|(B
-  // @param draggedElement $B:o=|$9$k2hA|$NMWAG(B
+  // キャンバス内の要素を削除
+  // @param draggedElement 削除する画像の要素
   static deleteElement(targetElement) {
     targetElement.remove();
   }

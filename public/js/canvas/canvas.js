@@ -13,24 +13,24 @@ export class Canvas {
     this.registerEvents();
   }
   
-  // $B%-%c%s%P%9$N=i4|2=(B
+  // キャンバスの初期化
   initCanvas() {
     this.removeAllCanvasObject(this.canvasId);
   } 
   
-  // canvas$BFb$N(BcanvasObject$B$NA4:o=|(B
+  // canvas内のcanvasObjectの全削除
   removeAllCanvasObject() {
-    // DOM$B$N:o=|(B
+    // DOMの削除
     while (this.element.firstChild) {
       CanvasView.deleteElement(this.element.firstChild);
     }
-    // $B%G!<%?%b%G%k$N:o=|(B
+    // データモデルの削除
     this.canvasObjects.length = 0;
   }
    
   removeCanvasObject() {
     CanvasView.deleteElement(this.selectedCanvasObject);
-    // selectedCanvasObject$B$rG[Ns$+$i:o=|(B
+    // selectedCanvasObjectを配列から削除
     this.canvasObjects = this.canvasObjects.filter(canvasObject => canvasObject.element != this.selectedCanvasObject);
   }
   
@@ -44,21 +44,21 @@ export class Canvas {
     
   }
   
-  // canvas$B$K%*%V%8%'%/%H$,%I%m%C%W$5$l$?$H$-$N%$%Y%s%H(B
+  // canvasにオブジェクトがドロップされたときのイベント
   droppedComponent(e) {
     console.log(window.canvas.draggedElement);
-    // $B%3!<%k%P%C%/4X?t$N;EMM$h$j(B
-    // this$B$O%$%s%9%?%s%9<+?H$G$O$J$/(B,this.Element$B$r;X$9(B
+    // コールバック関数の仕様より
+    // thisはインスタンス自身ではなく,this.Elementを指す
     console.log(this)
     const mousePosition = {};
     mousePosition.x = e.x;
     mousePosition.y = e.y;
     switch(draggedElement.className) {
-      // $B%5%$%I%P!<$+$i$N%I%i%C%0%"%s%I%I%m%C%W(B
+      // サイドバーからのドラッグアンドドロップ
       case "component":
         const image = draggedElement.children[0]
         canvasView.insertCanvasObjectImage(image, mousePosition.x, mousePositiony, this);
-        // $B?7$7$/EPO?$5$l$?(BcanvasObject$B$K%$%Y%s%H$NEPO?(B                    
+        // 新しく登録されたcanvasObjectにイベントの登録                    
           const canvasObjects = document.querySelectorAll('#canvas .canvasObject')
           canvasObjects.forEach(canvasObject => {
             canvasObject.addEventListener('dragstart', dragStartFromCanvasObject, false);
@@ -67,9 +67,9 @@ export class Canvas {
           });
         break;
         
-      // $B%-%c%s%P%9Fb$+$i%-%c%s%P%9Fb$X$N%I%i%C%0%"%s%I%I%m%C%W(B
+      // キャンバス内からキャンバス内へのドラッグアンドドロップ
       case "canvasObject":
-        // $B%I%i%C%0@h$K(BcanvasObject$B$,B8:_$9$k>l9g(B
+        // ドラッグ先にcanvasObjectが存在する場合
         //  if(targetCanvasObjectExists) {
         //    console.log("test2");
         //    draggedElement.style.left = targetPosition.x;
@@ -94,11 +94,11 @@ const droppedComponent = function (e) {
   mousePosition.x = e.x;
   mousePosition.y = e.y;
   switch(draggedElement.className) {
-    // $B%5%$%I%P!<$+$i$N%I%i%C%0%"%s%I%I%m%C%W(B
+    // サイドバーからのドラッグアンドドロップ
     case "component":
       const image = draggedElement.children[0]
       View.insertCanvasObjectImage(image, mousePosition.x, mousePositiony, this);
-      // $B?7$7$/EPO?$5$l$?(BcanvasObject$B$K%$%Y%s%H$NEPO?(B                    
+      // 新しく登録されたcanvasObjectにイベントの登録                    
       // const canvasObjects = document.querySelectorAll('#canvas .canvasObject')
       // canvasObjects.forEach(canvasObject => {
       //   canvasObject.addEventListener('dragstart', dragStartFromCanvasObject, false);
@@ -107,9 +107,9 @@ const droppedComponent = function (e) {
       // });
       break;
       
-    // $B%-%c%s%P%9Fb$+$i%-%c%s%P%9Fb$X$N%I%i%C%0%"%s%I%I%m%C%W(B
+    // キャンバス内からキャンバス内へのドラッグアンドドロップ
     case "canvasObject":
-      // $B%I%i%C%0@h$K(BcanvasObject$B$,B8:_$9$k>l9g(B
+      // ドラッグ先にcanvasObjectが存在する場合
       //  if(targetCanvasObjectExists) {
       //    console.log("test2");
       //    draggedElement.style.left = targetPosition.x;
