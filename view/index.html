@@ -1,12 +1,12 @@
 <head>
 </head>
-<body="initCanvas()">  
+<body="canvas.initCanvas()">  
 <div id="wrapper">  
   
 <div id="header">  
   Header
-  <input type="button" onClick="canvasEvent.initCanvas('canvas')" value="キャンバス初期化" style="float: right;">
-  <input type="button" onClick="canvasEvent.deleteCanvasObject(selectedCanvasObject)" value="キャンバスオブジェクト削除" style="float: right;">
+  <input type="button" onClick="canvas.initCanvas('canvas')" value="キャンバス初期化" style="float: right;">
+  <input type="button" onClick="canvas.deleteCanvasObject(selectedCanvasObject)" value="キャンバスオブジェクト削除" style="float: right;">
 </div>  
   
 <div id "main">
@@ -58,7 +58,7 @@ window.selectedCanvasObject = selectedCanvasObject;
 let draggedElement = null; // Elementが代入される変数
 
 const dragStartFromSidebar = function (e) {
-  window.draggedElement = this;
+  window.canvas.draggedElement = this;
   mousePosition.x = e.x;
   mousePosition.y = e.y;
   e.dataTransfer.dropEffect = 'copy';
@@ -67,7 +67,6 @@ const dragStartFromSidebar = function (e) {
 
 // canvas内にあるcanvasObjectのドラッグ時のイベント
 const dragStartFromCanvasObject = function (e) {
-  window.draggedElement = this;
   mousePosition.x = e.x;
   mousePosition.y = e.y;
 }

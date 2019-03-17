@@ -6,7 +6,9 @@ export class Canvas {
   
   canvasObjects = {};
   selectedCanvasObject = null;
-  canvasObjectCounter = 0; // canvasObjectの識別番号として利用
+  canvasObjectCounter = 0; // canvasObjectの識別番号として利用?
+  selectedCanvasObject = null;
+  draggedElement = null;
   
   constructor(id) {
     this.id = id;
@@ -16,13 +18,18 @@ export class Canvas {
   
   // キャンバスの初期化
   initCanvas() {
-    removeAllCanvasObject(this.canvasId);
+    this.removeAllCanvasObject(this.canvasId);
   } 
   
   // canvas内のcanvasObjectの全削除
   removeAllCanvasObject() {
-    while (this.canvasElement.firstChild) {
-      this.canvasElement.removeChild(canvasElement.firstChild);
+    // DOMの削除
+    while (this.element.firstChild) {
+      CanvasView.deleteElement(this.element.firstChild);
+    }
+    // データモデルの削除
+    for(const key in this.canvasObjects) {
+      delete this.canvasObjects[key];
     }
   }
    
@@ -35,13 +42,14 @@ export class Canvas {
   }
   
   registerEvents() {
-    this.element.addEventListener('dragover', CanvasEvent.dropped, false);
+    this.element.addEventListener('drop', CanvasEvent.dropped, false);
+    this.element.addEventListener('dragover', CanvasEvent.dragover, false);
     
   }
   
   // canvasにオブジェクトがドロップされたときのイベント
   droppedComponent(e) {
-    console.log(window.draggedElement);
+    console.log(window.canvas.draggedElement);
     // コールバック関数の仕様より
     // thisはインスタンス自身ではなく,this.Elementを指す
     console.log(this)
@@ -116,28 +124,4 @@ const droppedComponent = function (e) {
       break;
   }
   return false;
-}
-
-
-
-
-// キャンバスの初期化
-export const initCanvas = (canvasId) => {
-  removeAllCanvasObject(canvasId);
-} 
-
-
-// canvas内のcanvasObjectの全削除
-export const removeAllCanvasObject = (canvasId) => {
-  const canvasElement = document.getElementById(canvasId)
-  console.log(canvasId);
-  console.log(canvasElement);
-  while (canvasElement.firstChild) {
-    canvasElement.removeChild(canvasElement.firstChild);
-  }
-}
-
-// 
-export const deleteCanvasObject = (canvasObject) => {
-  selectedCanvasObject.remove();
 }
