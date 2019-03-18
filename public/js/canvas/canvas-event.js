@@ -7,7 +7,8 @@ export class CanvasEvent {
     const draggedElement = window.canvas.draggedElement;
     const image = draggedElement.children[0];
     switch(draggedElement.className) {
-      // サイドバーからのドラッグアンドドロップの場合
+      
+      // サイドバーからのコンポーネントのドラッグアンドドロップの場合
       case "component":
         const image = draggedElement.children[0]
         const insertElement = CanvasView.insertCanvasObjectImage(image, e.x, e.y, this);
@@ -18,7 +19,7 @@ export class CanvasEvent {
          // canvasObjectElement.addEventListener('click', clickCanvasObject, false);
         break;
         
-      // キャンバス内からキャンバス内へのドラッグアンドドロップ
+      // キャンバス内からキャンバス内へのキャンバスオブジェクトのドラッグアンドドロップの場合
       case "canvasObject":
         draggedElement.style.left = e.x;
         draggedElement.style.top = e.y;

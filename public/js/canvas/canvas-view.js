@@ -8,8 +8,8 @@ export class CanvasView {
   // @param targetElement 貼り付け先の親要素
   // @retrun 追加したelement 
   static insertCanvasObjectImage (image, xPoint, yPoint, parentElement) {
-    const insertElement = `<span class=canvasObject style="left: ${xPoint - 10}; top: ${yPoint - 10};"> 
-                             <img src=${image.src} style="width: 95%; height: 95%">
+    const insertElement = `<span class=canvasObject style="left: ${xPoint - 30}; top: ${yPoint - 30};"> 
+                             <img src=${image.src} style="width: 100%; height: 100%">
                            </span>`;
     parentElement.insertAdjacentHTML('afterbegin', insertElement);
     

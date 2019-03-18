@@ -1,4 +1,5 @@
 import {CanvasObjectView} from './canvas-object-view.js'
+import {LeaderLine} from '../../lib/leader-line.min.js'
 
 export class CanvasObjectEvent {
   
@@ -13,7 +14,8 @@ export class CanvasObjectEvent {
   
   static drop(e) {
     console.log(window.canvas.draggedElement);
-    console.log(this);
+    // 始点をdraggedelementの中心,終点をthisとした線を引く
+    
     
     e.stopPropagation();
   }
