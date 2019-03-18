@@ -13,12 +13,12 @@ export class CanvasObjectEvent {
   }
   
   static drop(e) {
-    console.log(window.canvas.draggedElement);
     // 始点をdraggedelementの中心,終点をthisとした線を引く
-    console.log(LeaderLine);
-    console.log(window.canvas.draggedElement);
-    console.log(this);
-    new LeaderLine(window.canvas.draggedElement, this);
+    const line = new LeaderLine(window.canvas.draggedElement, this);
+    
+    // 矢印の要素の取得 
+    const arrowElements = document.querySelectorAll('.leader-line'); 
+    console.log(arrowElements[arrowElements.length - 1])
     
     e.stopPropagation();
   }
