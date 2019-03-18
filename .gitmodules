@@ -1,0 +1,6 @@
+[submodule "leader-line"]
+	path = leader-line
+	url = https://github.com/anseki/leader-line
+[submodule "public/js/lib/leader-line"]
+	path = public/js/lib/leader-line
+	url = https://github.com/anseki/leader-line
