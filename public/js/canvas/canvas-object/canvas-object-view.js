@@ -3,12 +3,12 @@ export class CanvasObjectView {
   // 選択された要素を灰色にする
   static addColorselectedObject(selectedCanvasObject) {
     
-    // すべてのcanvasObjectの色を初期化
+    for(const key in window.canvas.canvasObjects) {
+      window.canvas.canvasObjects[key].element.style.filter = "brightness(100%)";
+    }
     
-    window.canvas.canvasObjects.forEach(canvasObject => {
-      canvasObject.element.style.filter = "brightness(100%)";
-    });
-      selectedCanvasObject.style.filter = "brightness(90%)";
+    // 選択した要素の色を変更
+    selectedCanvasObject.style.filter = "brightness(90%)";
   }
   
 }

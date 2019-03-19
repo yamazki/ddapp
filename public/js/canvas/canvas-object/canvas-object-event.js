@@ -1,5 +1,6 @@
 import {CanvasObjectView} from './canvas-object-view.js'
 import {LeaderLine} from '../../lib/leader-line/leader-line.min.js'
+import {AllowLine} from '../arrow-line/arrow-line.js'
 
 export class CanvasObjectEvent {
   
@@ -13,12 +14,15 @@ export class CanvasObjectEvent {
   }
   
   static drop(e) {
-    // 始点をdraggedelementの中心,終点をthisとした線を引く
-    const line = new LeaderLine(window.canvas.draggedElement, this);
+    // 始点をドラッグ中のオブジェクト,終点をドロップされるオブジェクトとした線を引く
+    const line = new LeaderLine(window.canvas.draggedElement, this);    
+    window.canvas.arrowLines[line._id] = line;
     
-    // 矢印の要素の取得 
-    const arrowElements = document.querySelectorAll('.leader-line'); 
-    console.log(arrowElements[arrowElements.length - 1])
+    // 追加された矢印の要素の取得 
+    const arrowLineElements = document.querySelectorAll('.leader-line'); 
+    const addedArrowLineElement = arrowLineElements[arrowLineElements.length - 1];
+    
+    new AllowLine(window.canvas.draggedElement, this, addedArrowLineElement, line);
     
     e.stopPropagation();
   }

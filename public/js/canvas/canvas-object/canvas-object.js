@@ -1,10 +1,15 @@
 import {CanvasObjectEvent} from './canvas-object-event.js'
 
+let id = 0;
 export class CanvasObject {
   
   constructor(element) {
     this.element = element;
     this.registerEvents();
+    this.id = id++
+    console.log(this.id);
+    console.log(this);
+    window.canvas.canvasObjects[this.id] = this;
   }
   
   setId() {

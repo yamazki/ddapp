@@ -32,4 +32,10 @@ export class CanvasView {
     targetElement.remove();
   }
   
+  // ドラッグされたとき矢印を再描写
+  static renderArrowLines() {
+    for(const key in window.canvas.arrowLines) {
+      window.canvas.arrowLines[key].line.position();
+    }
+  }
 }

@@ -12,7 +12,7 @@ export class CanvasEvent {
       case "component":
         const image = draggedElement.children[0]
         const insertElement = CanvasView.insertCanvasObjectImage(image, e.x, e.y, this);
-        canvas.canvasObjects.push(new CanvasObject(insertElement));
+        new CanvasObject(insertElement);
         
          // canvasObjectElement.addEventListener('dragstart', dragStartFromCanvasObject, false);
          // canvasObjectElement.addEventListener('drop', dragCheck, false);
@@ -23,6 +23,7 @@ export class CanvasEvent {
       case "canvasObject":
         draggedElement.style.left = e.x;
         draggedElement.style.top = e.y;
+        CanvasView.renderArrowLines();
         break;
     }
     return false;
