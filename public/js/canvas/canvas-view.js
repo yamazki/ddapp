@@ -27,15 +27,20 @@ export class CanvasView {
   }
   
   // キャンバス内の要素を削除
-  // @param draggedElement 削除する画像の要素
+  // @param draggedElement 削除する要素
   static deleteElement(targetElement) {
     targetElement.remove();
   }
   
-  // ドラッグされたとき矢印を再描写
+  // 矢印を再描写
   static renderArrowLines() {
     for(const key in window.canvas.arrowLines) {
       window.canvas.arrowLines[key].line.position();
     }
   }
+  
+  // 矢印の削除
+  static deleteArrowLine() {
+  }
+  
 }

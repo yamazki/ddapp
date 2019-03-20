@@ -7,8 +7,6 @@ export class CanvasObject {
     this.element = element;
     this.registerEvents();
     this.id = id++
-    console.log(this.id);
-    console.log(this);
     window.canvas.canvasObjects[this.id] = this;
   }
   

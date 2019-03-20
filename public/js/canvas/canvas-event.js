@@ -1,5 +1,6 @@
 import {CanvasObject} from './canvas-object/canvas-object.js'
 import {CanvasView} from './canvas-view.js'
+import {ArrowLineView} from './arrow-line/arrow-line-view.js'
 
 export class CanvasEvent {
   
@@ -23,7 +24,7 @@ export class CanvasEvent {
       case "canvasObject":
         draggedElement.style.left = e.x;
         draggedElement.style.top = e.y;
-        CanvasView.renderArrowLines();
+        ArrowLineView.redepictArrowLine();
         break;
     }
     return false;
