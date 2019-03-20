@@ -1,10 +1,8 @@
-import {CanvasView} from './canvas-view.js'
 import {CanvasEvent} from './canvas-event.js'
-import {CanvasObject} from './canvas-object/canvas-object.js'
+import {CanvasObjectView} from './canvas-object/canvas-object-view.js'
 import {ArrowLineView} from './arrow-line/arrow-line-view.js'
 
 export class Canvas {
-  
   
   constructor(id) {
     this.canvasObjects = {};
@@ -26,21 +24,20 @@ export class Canvas {
   removeAllCanvasObject() {
     // DOMの削除
     while (this.element.firstChild) {
-      CanvasView.deleteElement(this.element.firstChild);
+      CanvasObjectView.deleteElement(this.element.firstChild);
     }
     // データモデルの削除
     this.canvasObjects = {};
   }
   
   removeAllArrowLines() {
-    console.log(this.arrowLines)
     ArrowLineView.removeAllArrowLines();
     this.arrowLines = {};
   }
   
    
   removeCanvasObject() {
-    CanvasView.deleteElement(this.selectedCanvasObject);
+    CanvasObjectView.deleteElement(this.selectedCanvasObject);
     // selectedCanvasObjectを配列から削除
     delete window.canvas.canvasObjects[this.selectedCanvasObject.id]
   }
@@ -52,7 +49,6 @@ export class Canvas {
   registerEvents() {
     this.element.addEventListener('drop', CanvasEvent.dropped, false);
     this.element.addEventListener('dragover', CanvasEvent.dragover, false);
-    
   }
   
 }

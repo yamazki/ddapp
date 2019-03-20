@@ -1,5 +1,5 @@
 import {CanvasObject} from './canvas-object/canvas-object.js'
-import {CanvasView} from './canvas-view.js'
+import {CanvasObjectView} from './canvas-object/canvas-object-view.js'
 import {ArrowLineView} from './arrow-line/arrow-line-view.js'
 
 export class CanvasEvent {
@@ -12,7 +12,7 @@ export class CanvasEvent {
       // サイドバーからのコンポーネントのドラッグアンドドロップの場合
       case "component":
         const image = draggedElement.children[0]
-        const insertElement = CanvasView.insertCanvasObjectImage(image, e.x, e.y, this);
+        const insertElement = CanvasObjectView.insertCanvasObjectImage(image, e.x, e.y, this);
         new CanvasObject(insertElement);
         
          // canvasObjectElement.addEventListener('dragstart', dragStartFromCanvasObject, false);
@@ -22,9 +22,8 @@ export class CanvasEvent {
         
       // キャンバス内からキャンバス内へのキャンバスオブジェクトのドラッグアンドドロップの場合
       case "canvasObject":
-        draggedElement.style.left = e.x;
-        draggedElement.style.top = e.y;
-        ArrowLineView.redepictArrowLine();
+        CanvasObjectView.moveCanvasObject(window.canvas.draggedElement, e.x, e.y)
+        ArrowLineView.redepictArrowLines();
         break;
     }
     return false;

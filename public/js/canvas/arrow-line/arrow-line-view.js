@@ -6,7 +6,7 @@ export class ArrowLineView {
     return new LeaderLine(start, end);    
   }
   
-  static redepictArrowLine() {
+  static redepictArrowLines() {
     for(const key in window.canvas.arrowLines) {
       window.canvas.arrowLines[key].line.position();
     }
