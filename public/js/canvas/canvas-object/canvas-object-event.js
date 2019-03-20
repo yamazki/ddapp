@@ -1,5 +1,5 @@
 import {CanvasObjectView} from './canvas-object-view.js'
-import {LeaderLine} from '../../lib/leader-line/leader-line.min.js'
+import {LeaderLine} from '../../lib/leader-line/myleader-line.min.js'
 import {AllowLine} from '../arrow-line/arrow-line.js'
 
 export class CanvasObjectEvent {

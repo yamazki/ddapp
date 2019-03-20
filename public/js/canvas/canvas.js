@@ -4,12 +4,12 @@ import {CanvasObject} from './canvas-object/canvas-object.js'
 
 export class Canvas {
   
-  canvasObjects = {};
-  arrowLines = {};
-  selectedCanvasObject = null;
-  draggedElement = null;
   
   constructor(id) {
+    this.canvasObjects = {};
+    this.arrowLines = {};
+    this.selectedCanvasObject = null;
+    this.draggedElement = null;
     this.element = document.getElementById(id);
     this.registerEvents();
   }
